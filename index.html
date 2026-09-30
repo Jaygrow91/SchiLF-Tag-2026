@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SchiLF-Tag · Gesamtschule Rodenkirchen · 12.11.2026</title>
+<style>
+:root{
+  --paper:#f6f5f3; --card:#ffffff; --ink:#262626; --muted:#8d8d8d; --faint:#b9b7b4;
+  --line:#e8e5e2; --accent:#6f8377; --accent-soft:#edf1ee; --accent-ink:#51645a;
+  --warm:#a9854e; --warm-soft:#f6efe4; --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:-apple-system,"Avenir Next","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  background:var(--paper); color:var(--ink); display:flex; min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- Sidebar ---------- */
+aside{
+  width:320px; flex-shrink:0; background:var(--card); border-right:1px solid var(--line);
+  display:flex; flex-direction:column; padding:28px 20px 20px; gap:22px;
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.brand{display:flex; align-items:center; gap:14px; padding:0 6px}
+.brand svg,.brand img{height:54px; width:auto; flex-shrink:0}
+.brand .bt{font-size:11px; letter-spacing:.14em; color:var(--faint);
+  text-transform:uppercase; line-height:1.6}
+
+.event{padding:0 6px}
+.event h1{font-size:24px; font-weight:650; letter-spacing:-.01em}
+.event .sub{font-size:13.5px; color:var(--muted); margin-top:3px}
+.event .date{
+  display:inline-block; margin-top:12px; font-size:12.5px; color:var(--accent-ink);
+  background:var(--accent-soft); padding:4px 13px; border-radius:999px; font-weight:600;
+}
+
+nav{display:flex; flex-direction:column; gap:2px; margin-top:6px}
+.navitem{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  padding:9px 12px; border:none; background:none; border-radius:10px; cursor:pointer;
+  font-size:14.5px; color:var(--ink); font-family:inherit; transition:background .15s;
+  user-select:none;
+}
+.navitem:hover{background:#f3f1ef}
+.navitem.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:600}
+.navitem .num{font-size:12px; color:var(--faint); width:28px; flex-shrink:0}
+.navitem.active .num{color:var(--accent)}
+.navitem .t-text{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+
+.navgroup-btn .gtag{font-size:10.5px; letter-spacing:.12em; color:var(--faint);
+  text-transform:uppercase; margin-right:9px}
+.navgroup-btn .glabel{font-weight:600}
+.navgroup-btn .chev{margin-left:auto; color:var(--faint); font-size:10px; transition:transform .2s}
+.navgroup.open .navgroup-btn .chev{transform:rotate(90deg)}
+.subnav{overflow:hidden; max-height:0; transition:max-height .25s ease}
+.navgroup.open .subnav{max-height:560px}
+.subnav .navitem{padding-left:16px}
+
+.side-foot{margin-top:auto; font-size:11.5px; color:var(--faint); padding:0 12px; line-height:1.7}
+
+/* ---------- Mini-Timer in der Sidebar ---------- */
+.mtimer{display:inline-flex; align-items:center; gap:5px; flex-shrink:0}
+.mt-time{
+  font-size:11.5px; color:var(--muted); font-variant-numeric:tabular-nums;
+  min-width:36px; text-align:right;
+}
+.mt-btn{
+  width:22px; height:22px; border-radius:50%; border:1px solid var(--line);
+  background:#fff; color:var(--muted); font-size:9px; cursor:pointer; padding:0;
+  display:inline-flex; align-items:center; justify-content:center; transition:all .15s;
+}
+.mt-btn:hover{border-color:var(--accent); color:var(--accent-ink)}
+.mt-reset{
+  width:20px; height:20px; border:none; background:none; color:var(--faint);
+  font-size:12px; cursor:pointer; padding:0; display:none;
+  align-items:center; justify-content:center;
+}
+.mt-reset:hover{color:var(--accent-ink)}
+.mtimer.dirty .mt-reset{display:inline-flex}
+.mtimer.running .mt-time{color:var(--accent-ink); font-weight:650}
+.mtimer.running .mt-btn{border-color:var(--accent); color:var(--accent-ink); background:var(--accent-soft)}
+.mtimer.done .mt-time{color:var(--warm); font-weight:650}
+
+/* ---------- Hauptbereich ---------- */
+main{flex:1; padding:48px; overflow-y:auto; height:100vh}
+.view{display:none; max-width:760px; margin:0 auto}
+.view.active{display:block; animation:fade .25s ease}
+@keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1}}
+
+.eyebrow{font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); font-weight:600; margin-bottom:8px}
+h2.title{font-size:27px; font-weight:650; letter-spacing:-.015em; margin-bottom:6px}
+.lead{font-size:15px; color:var(--muted); margin-bottom:26px; line-height:1.6}
+
+.card{background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); padding:20px 24px; margin-bottom:12px}
+.goal{display:flex; gap:14px; align-items:flex-start}
+.goal .dot{width:8px; height:8px; border-radius:50%; background:var(--accent);
+  margin-top:7px; flex-shrink:0; opacity:.65}
+.goal p{font-size:15px; line-height:1.6}
+.quote{
+  border-left:3px solid var(--accent); background:var(--card);
+  border-top:1px solid var(--line); border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:18px 22px; margin-top:20px; font-style:italic; color:#4a4a4a;
+  font-size:14.5px; line-height:1.7;
+}
+
+/* Teil-Übersicht */
+.subcard{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:17px 20px; margin-bottom:11px; display:flex; align-items:center; gap:16px;
+  cursor:pointer; transition:border-color .15s, box-shadow .15s;
+}
+.subcard:hover{border-color:#d4d0ca; box-shadow:0 2px 10px rgba(0,0,0,.045)}
+.subcard .num{font-size:13px; color:var(--faint); width:28px; flex-shrink:0; font-weight:600}
+.subcard .body{flex:1; min-width:0}
+.subcard .t{font-size:15.5px; font-weight:600}
+.subcard .d{font-size:13px; color:var(--muted); margin-top:2px}
+.subcard .min{font-size:12.5px; color:var(--faint); flex-shrink:0}
+
+/* ---------- großer Timer (Detailansicht) ---------- */
+.timer{
+  display:inline-flex; align-items:center; gap:8px; background:#faf9f8;
+  border:1px solid var(--line); border-radius:999px; padding:8px 8px 8px 16px;
+  font-variant-numeric:tabular-nums; flex-shrink:0;
+}
+.timer .t-time{font-size:17px; font-weight:650; min-width:56px; text-align:center}
+.timer.running{border-color:var(--accent); background:var(--accent-soft)}
+.timer.running .t-time{color:var(--accent-ink)}
+.timer.done{border-color:var(--warm); background:var(--warm-soft)}
+.timer.done .t-time{color:var(--warm)}
+.t-btn{
+  border:1px solid var(--line); background:var(--card); color:var(--ink);
+  height:32px; min-width:32px; padding:0 8px; border-radius:999px; cursor:pointer;
+  font-size:12px; display:inline-flex; align-items:center; justify-content:center;
+  transition:all .15s; font-family:inherit;
+}
+.t-btn:hover{border-color:var(--accent); color:var(--accent-ink)}
+.t-btn.primary{background:var(--accent); border-color:var(--accent);
+  color:#fff; padding:0 16px; font-weight:600; font-size:12.5px}
+.t-btn.primary:hover{background:var(--accent-ink)}
+.pulse{width:6px; height:6px; border-radius:50%; background:var(--accent); display:none}
+.timer.running .pulse{display:block; animation:p 1.6s infinite}
+@keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
+
+/* Detailansicht */
+.detail-head{
+  background:var(--card); border:1px solid var(--line);
+  border-radius:var(--radius); padding:24px 26px; margin-bottom:16px;
+}
+.detail-head .top{display:flex; justify-content:space-between;
+  align-items:flex-start; gap:20px; flex-wrap:wrap}
+.detail-head h2{font-size:22px; font-weight:650; letter-spacing:-.01em}
+.metachips{display:flex; gap:8px; margin-top:10px}
+.chip{font-size:12px; color:var(--muted); background:#faf9f8;
+  border:1px solid var(--line); padding:3px 11px; border-radius:999px}
+.progress-line{height:3px; background:var(--line); border-radius:99px;
+  margin-top:22px; overflow:hidden}
+.progress-line i{display:block; height:100%; width:0%;
+  background:var(--accent); border-radius:99px; transition:width 1s linear}
+
+.placeholder{
+  border:1.5px dashed #d9d5d0; border-radius:var(--radius); padding:30px 26px;
+  color:var(--faint); font-size:14px; text-align:center; line-height:1.8; margin-bottom:16px;
+}
+
+.pn{display:flex; justify-content:space-between; gap:12px; margin-top:6px}
+.pn button{
+  border:1px solid var(--line); background:var(--card); border-radius:10px;
+  padding:10px 16px; font-size:13px; color:var(--muted); cursor:pointer;
+  font-family:inherit; max-width:48%; text-align:left; transition:all .15s;
+}
+.pn button:hover{color:var(--accent-ink); border-color:var(--accent)}
+.pn button.next{text-align:right; margin-left:auto}
+.pn button b{display:block; color:var(--ink); font-weight:600; margin-top:3px;
+  font-size:13.5px}
+
+@media (max-width:880px){
+  body{flex-direction:column}
+  aside{width:100%; height:auto; position:static;
+    border-right:none; border-bottom:1px solid var(--line)}
+  main{padding:28px 20px 48px; height:auto}
+}
+</style>
+</head>
+<body>
+
+<aside>
+  <div class="brand">
+    <!-- Echtes Logo verwenden: die folgende SVG-Zeile durch diese Zeile ersetzen:
+         <img src="logo.png" alt="Gesamtschule Rodenkirchen">
+         (logo.png muss im selben Ordner liegen wie diese Datei) -->
+    <svg viewBox="0 0 120 104" aria-label="Logo Gesamtschule Rodenkirchen">
+      <path d="M60 8 L8 96 L36 82 L60 46 Z"  fill="#bdbdbd" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M60 8 L112 96 L84 82 L60 46 Z" fill="#a9a9a9" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M8 96 L112 96 L84 82 L36 82 Z" fill="#d0d0d0" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+    </svg>
+    <div class="bt">Gesamtschule<br>Rodenkirchen</div>
+  </div>
+
+  <div class="event">
+    <h1>SchiLF-Tag</h1>
+    <div class="sub">Pädagogisches Handeln</div>
+    <div class="date">12. November 2026</div>
+  </div>
+
+  <nav id="nav"></nav>
+
+  <div class="side-foot">Schulinterne Fortbildung<br>Timer direkt hier in der Leiste steuerbar</div>
+</aside>
+
+<main id="main"></main>
+
+<script>
+/* ============ KONFIGURATION – hier anpassen ============ */
+const PROGRAMM = {
+  ziele: {
+    titel: "Ziele des Tages",
+    punkte: [
+      "Den Ablaufplan für den Umgang mit Konflikten wiederholen",
+      "Die Schulregeln bewusst machen (Vorgehen bei Gewalt, Handynutzungsordnung)",
+      "Den persönlichen Umgang und Beitrag zu den bestehenden Regeln reflektieren",
+      "Den Umgang mit eskalierenden Situationen reflektieren"
+    ],
+    prinzip: "Durchgehendes Prinzip: Jeder Schritt verbindet die gemeinsame Regel / den gemeinsamen Ablauf (Geschlossenheit) mit der Frage, was hinter dem Verhalten steckt (Verstehen). Es geht nicht darum, die Regeln nur abzuarbeiten."
+  },
+  teile: [
+    {
+      id:"t1", tag:"Teil 1", titel:"Auftakt & Impuls",
+      subs:[
+        { id:"1.1", titel:"Begrüßung & Einstieg", min:10, desc:"Kurze Beschreibung folgt …" },
+        { id:"1.2", titel:"Impuls: Pädagogisches Handeln", min:20, desc:"Kurze Beschreibung folgt …" },
+        { id:"1.3", titel:"Erster Austausch", min:15, desc:"Kurze Beschreibung folgt …" }
+      ]
+    },
+    {
+      id:"t2", tag:"Teil 2", titel:"Arbeitsphase Jahrgangsteams",
+      subs:[
+        { id:"2.1", titel:"Gemeinsame pädagogische Grundhaltung klären", min:20,
+          desc:"Schriftlich für sich (5 Min.) · Gemeinsamkeiten suchen · Leitsatz formulieren" },
+        { id:"2.2", titel:"Minimalkonsens, Ansprache & Fokus-Thema", min:25,
+          desc:"Blitzabstimmung · Minimalkonsens inkl. Ausnahmen · Haltung zur Ansprache" },
+        { id:"2.3", titel:"Ablaufplan vertiefen", min:20,
+          desc:"Untere Stufen stärken · Struktur gegenseitiger Unterstützung" },
+        { id:"2.4", titel:"Fallarbeit in Kleingruppen", min:25,
+          desc:"Anonymisierte Fälle · Vorlage: Geschlossenheit – Verstehen – Verbinden" },
+        { id:"2.5", titel:"Vereinbarung / Plakat", min:15,
+          desc:"Ergebnisse bündeln · Plakat für die Präsentation" },
+        { id:"2.6", titel:"Persönlicher Ausblick", min:10,
+          desc:"Stille Reflexion oder Blitzlicht im Kreis" }
+      ]
+    }
+  ]
+};
+/* ======================================================= */
+
+const timers = {};
+PROGRAMM.teile.forEach(t => t.subs.forEach(s => {
+  timers[s.id] = { total: s.min*60, left: s.min*60, running:false };
+}));
+
+const fmt = s => String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+
+/* großer Timer (Detailansicht) */
+function timerHTML(id){
+  return `<span class="timer" data-timer="${id}">
+    <span class="pulse"></span>
+    <span class="t-time" data-time="${id}">${fmt(timers[id].left)}</span>
+    <button class="t-btn primary" data-toggle="${id}">Start</button>
+    <button class="t-btn" data-reset="${id}" title="Zurücksetzen">↺</button>
+  </span>`;
+}
+
+/* Mini-Timer (Sidebar) */
+function miniTimerHTML(id){
+  return `<span class="mtimer" data-timer="${id}">
+    <button class="mt-btn iconic" data-toggle="${id}" title="Start / Pause">▶</button>
+    <span class="mt-time" data-time="${id}">${fmt(timers[id].left)}</span>
+    <button class="mt-reset" data-reset="${id}" title="Zurücksetzen">↺</button>
+  </span>`;
+}
+
+/* synchronisiert ALLE Anzeigen eines Timers (Sidebar + Detailansicht) */
+function syncTimer(id){
+  const t = timers[id];
+  document.querySelectorAll(`[data-time="${id}"]`)
+    .forEach(el => el.textContent = fmt(t.left));
+  document.querySelectorAll(`[data-timer="${id}"]`).forEach(el => {
+    el.classList.toggle("running", t.running);
+    el.classList.toggle("done", t.left === 0);
+    el.classList.toggle("dirty", t.left < t.total);
+  });
+  document.querySelectorAll(`[data-toggle="${id}"]`).forEach(el => {
+    if (el.classList.contains("iconic")){
+      el.textContent = t.running ? "⏸" : "▶";
+    } else {
+      el.textContent = t.running ? "Pause"
+        : (t.left < t.total && t.left > 0 ? "Weiter" : "Start");
+    }
+  });
+  document.querySelectorAll(`[data-prog="${id}"]`)
+    .forEach(el => el.style.width = (100*(1 - t.left/t.total)) + "%");
+}
+
+setInterval(() => {
+  for (const id in timers){
+    const t = timers[id];
+    if (t.running && t.left > 0){
+      t.left--;
+      if (t.left === 0) t.running = false;
+      syncTimer(id);
+    }
+  }
+}, 1000);
+
+const main = document.getElementById("main");
+const nav  = document.getElementById("nav");
+const order = ["ziele"];
+const findSub = id => {
+  for (const t of PROGRAMM.teile){
+    const s = t.subs.find(x => x.id === id);
+    if (s) return s;
+  }
+};
+
+function viewZiele(){
+  const z = PROGRAMM.ziele;
+  const first = PROGRAMM.teile[0].subs[0];
+  return `<section class="view" data-view="ziele">
+    <div class="eyebrow">SchiLF-Tag · 12.11.2026</div>
+    <h2 class="title">${z.titel}</h2>
+    <p class="lead">Das soll heute erreicht werden:</p>
+    ${z.punkte.map(p=>`<div class="card goal"><span class="dot"></span><p>${p}</p></div>`).join("")}
+    <div class="quote">${z.prinzip}</div>
+    <div class="pn"><span></span>
+      <button class="next" data-goto="sub-${first.id}">Erster Schritt →<b>${first.id} ${first.titel}</b></button>
+    </div>
+  </section>`;
+}
+
+function viewTeil(t){
+  const gesamt = t.subs.reduce((a,s)=>a+s.min,0);
+  return `<section class="view" data-view="teil-${t.id}">
+    <div class="eyebrow">${t.tag}</div>
+    <h2 class="title">${t.titel}</h2>
+    <p class="lead">${t.subs.length} Unterkapitel · ${gesamt} Minuten verplant · Timer in der linken Leiste</p>
+    ${t.subs.map(s=>`
+      <div class="subcard" data-goto="sub-${s.id}">
+        <span class="num">${s.id}</span>
+        <div class="body">
+          <div class="t">${s.titel}</div>
+          <div class="d">${s.desc}</div>
+        </div>
+        <span class="min">${s.min} Min</span>
+      </div>`).join("")}
+  </section>`;
+}
+
+function viewSub(t, s){
+  const idx  = order.indexOf("sub-"+s.id);
+  const prev = order[idx-1], next = order[idx+1];
+  const label = v => v === "ziele" ? "Ziele" : (()=>{const id=v.replace("sub-","");return id+" "+findSub(id).titel})();
+  return `<section class="view" data-view="sub-${s.id}">
+    <div class="eyebrow">${t.tag} · Unterkapitel ${s.id}</div>
+    <div class="detail-head">
+      <div class="top">
+        <div>
+          <h2>${s.titel}</h2>
+          <div class="metachips"><span class="chip">⏱ ${s.min} Minuten</span></div>
+        </div>
+        ${timerHTML(s.id)}
+      </div>
+      <div class="progress-line"><i data-prog="${s.id}"></i></div>
+    </div>
+    <div class="placeholder">
+      ${s.desc}<br><br>
+      Hier entsteht der Inhalt zu diesem Unterkapitel –<br>
+      Anleitung, Materialien und Ergebnisfelder.
+    </div>
+    <div class="pn">
+      ${prev ? `<button data-goto="${prev}">← Zurück<b>${label(prev)}</b></button>` : "<span></span>"}
+      ${next ? `<button class="next" data-goto="${next}">Weiter →<b>${label(next)}</b></button>` : ""}
+    </div>
+  </section>`;
+}
+
+/* ---- Navigation & Views generieren ---- */
+let navHTML = `<button class="navitem" data-goto="ziele"><span class="num">●</span><span class="t-text">Ziele</span></button>`;
+let mainHTML = viewZiele();
+
+PROGRAMM.teile.forEach(t => {
+  navHTML += `<div class="navgroup open">
+    <button class="navitem navgroup-btn" data-group>
+      <span class="gtag">${t.tag}</span><span class="glabel t-text">${t.titel}</span><span class="chev">▶</span>
+    </button>
+    <div class="subnav">
+      <button class="navitem" data-goto="teil-${t.id}"><span class="num">▦</span><span class="t-text">Übersicht</span></button>
+      ${t.subs.map(s=>`<div class="navitem" role="button" tabindex="0" data-goto="sub-${s.id}">
+        <span class="num">${s.id}</span><span class="t-text" title="${s.titel}">${s.titel}</span>${miniTimerHTML(s.id)}
+      </div>`).join("")}
+    </div>
+  </div>`;
+  mainHTML += viewTeil(t) + t.subs.map(s=>viewSub(t,s)).join("");
+  t.subs.forEach(s=>order.push("sub-"+s.id));
+});
+
+nav.innerHTML = navHTML;
+main.innerHTML = mainHTML;
+
+function goto(viewId){
+  document.querySelectorAll(".view").forEach(v=>
+    v.classList.toggle("active", v.dataset.view===viewId));
+  document.querySelectorAll(".navitem[data-goto]").forEach(n=>
+    n.classList.toggle("active", n.dataset.goto===viewId));
+  document.querySelector("main").scrollTop = 0;
+}
+
+document.addEventListener("click", e => {
+  const tog = e.target.closest("[data-toggle]");
+  const rst = e.target.closest("[data-reset]");
+  if (tog){
+    const t = timers[tog.dataset.toggle];
+    if (t.left === 0) t.left = t.total;
+    t.running = !t.running;
+    syncTimer(tog.dataset.toggle);
+    return;
+  }
+  if (rst){
+    const t = timers[rst.dataset.reset];
+    t.running = false; t.left = t.total;
+    syncTimer(rst.dataset.reset);
+    return;
+  }
+  const g = e.target.closest("[data-goto]");
+  if (g){ goto(g.dataset.goto); return; }
+  const grp = e.target.closest("[data-group]");
+  if (grp) grp.closest(".navgroup").classList.toggle("open");
+});
+
+/* Tastatur-Bedienung für die Menüeinträge (Enter / Leertaste) */
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const n = e.target.closest ? e.target.closest(".navitem") : null;
+  if (n){ e.preventDefault(); n.click(); }
+});
+
+goto("ziele");
+</script>
+</body>
+</html>
